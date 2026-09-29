@@ -17,4 +17,8 @@ declare module "next-auth" {
   interface Profile {
     bsn: string;
   }
+  interface User {
+    bsn?: string;
+    preferred_username?: string;
+  }
 }

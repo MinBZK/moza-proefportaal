@@ -3,6 +3,7 @@
 import { auth, signOut } from "@/auth";
 import { redirect, RedirectType } from "next/navigation";
 import { setOptionCookies, updateKvkCookie } from "../kvknummer";
+import { devLoginEnabled } from "./devLogin";
 
 export async function SignOutAction() {
   const session = await auth();
@@ -18,6 +19,11 @@ export async function SignOutAction() {
 
   setOptionCookies({});
   updateKvkCookie("");
+
+  // Bij lokaal inloggen is er geen Keycloak-sessie om af te sluiten.
+  if (devLoginEnabled) {
+    redirect("/", RedirectType.push);
+  }
 
   //return NextResponse.redirect(logoutUrl);
   redirect(logoutUrl, RedirectType.push);
