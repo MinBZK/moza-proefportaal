@@ -1,0 +1,41 @@
+/* Alleen voor de voorbeeldpagina /ux/grid */
+
+.grid-voorbeeld {
+  padding-block: var(--rhc-space-3xl, 2rem);
+  font-family: var(--rhc-text-font-family-sans, sans-serif);
+  color: var(--rhc-color-cool-grey-900, #1b1f24);
+}
+
+.grid-voorbeeld__sectie {
+  margin-block-end: var(--rhc-space-4xl, 2.5rem);
+}
+
+.grid-voorbeeld__kop {
+  margin-block-end: var(--rhc-space-md, 0.5rem);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.grid-voorbeeld__uitleg {
+  margin-block-end: var(--rhc-space-xl, 1rem);
+}
+
+.grid-voorbeeld__code {
+  font-family: monospace;
+  font-size: 0.875rem;
+}
+
+.grid-voorbeeld__blok {
+  box-sizing: border-box;
+  min-block-size: 3rem;
+  padding: var(--rhc-space-md, 0.5rem);
+  border: 1px solid var(--rhc-color-lintblauw-300, #8fa3bd);
+  background-color: var(--rhc-color-lintblauw-50, #e6ebf2);
+  font-size: 0.875rem;
+  overflow-wrap: anywhere;
+}
+
+.grid-voorbeeld__blok--genest {
+  border-color: var(--rhc-color-oranje-300, #f0b37e);
+  background-color: var(--rhc-color-oranje-50, #fdf1e6);
+}
