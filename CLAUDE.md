@@ -5,7 +5,8 @@ React/Next.js-frontend (App Router, React 19, TypeScript) van het MOZA-portaal v
 ## Repo's
 
 - `origin` = MinBZK/moza-proefportaal. PR's gaan hierheen, naar `main`.
-- `upstream` = MinBZK/moza-portaal. Alleen lezen, geen PR's.
+- `portaal` = MinBZK/moza-portaal. Alleen lezen, geen PR's.
+- moza-proefportaal is op GitHub een fork van moza-portaal, dus de web-UI stelt moza-portaal voor als base. Maak PR's met `gh pr create` (standaardrepo staat op moza-proefportaal).
 
 ## Stack
 
