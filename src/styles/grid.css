@@ -1,0 +1,312 @@
+/*
+ * 12-koloms grid
+ *
+ * <div class="mox-container">
+ *   <div class="mox-grid">
+ *     <div class="mox-grid__cell mox-grid__cell--sm-6 mox-grid__cell--lg-4">…</div>
+ *   </div>
+ * </div>
+ *
+ * Naamgeving: mox-grid__cell--{breakpoint}-{kolommen}
+ *
+ *   mox-grid__cell--lg-4
+ *                   │  └─ 4 = de cel is 4 van de 12 kolommen breed
+ *                   └──── lg = vanaf een groot scherm (1024px en breder)
+ *
+ * Breakpoints (media queries kunnen geen CSS-variabelen gebruiken):
+ *   (geen)  alle schermen
+ *   sm      small        ≥ 40em  (640px)   grote telefoon, liggend
+ *   md      medium       ≥ 48em  (768px)   tablet
+ *   lg      large        ≥ 64em  (1024px)  laptop
+ *   xl      extra large  ≥ 80em  (1280px)  groot beeldscherm
+ *
+ * Kolommen (van 12):
+ *   12 = volle breedte, 6 = helft (2 naast elkaar),
+ *   4 = derde (3 naast elkaar), 3 = kwart (4 naast elkaar)
+ *
+ * Het werkt als een trap: een modifier geldt vanaf zijn breakpoint en blijft
+ * gelden tot een grotere modifier hem overschrijft. Zonder modifier is een cel
+ * 12 kolommen breed. Schrijf dus alleen de momenten op waarop de breedte verandert.
+ *
+ * Voorbeeld: mox-grid__cell--sm-6 mox-grid__cell--lg-4 mox-grid__cell--xl-3
+ *   0–639px      geen modifier  → 12 (1 naast elkaar)
+ *   640–767px    sm-6           → 6  (2 naast elkaar)
+ *   768–1023px   nog sm-6       → 6  (2 naast elkaar, er is geen md)
+ *   1024–1279px  lg-4           → 4  (3 naast elkaar)
+ *   ≥ 1280px     xl-3           → 3  (4 naast elkaar)
+ */
+
+/* Niet laten overerven, anders neemt een geneste cel de breedte van zijn ouder over. */
+@property --mox-grid-span {
+  syntax: "*";
+  inherits: false;
+}
+@property --mox-grid-span-sm {
+  syntax: "*";
+  inherits: false;
+}
+@property --mox-grid-span-md {
+  syntax: "*";
+  inherits: false;
+}
+@property --mox-grid-span-lg {
+  syntax: "*";
+  inherits: false;
+}
+@property --mox-grid-span-xl {
+  syntax: "*";
+  inherits: false;
+}
+
+.mox-container {
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: 80rem;
+  margin-inline: auto;
+  padding-inline: var(--rhc-space-xl, 1rem);
+}
+
+.mox-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--rhc-space-xl, 1rem);
+}
+
+.mox-grid__cell {
+  --_mox-span: var(--mox-grid-span, 12);
+  grid-column: span var(--_mox-span) / span var(--_mox-span);
+  min-inline-size: 0;
+}
+
+@media (min-width: 40em) {
+  .mox-grid__cell {
+    --_mox-span: var(--mox-grid-span-sm, var(--mox-grid-span, 12));
+  }
+}
+
+@media (min-width: 48em) {
+  .mox-grid {
+    gap: var(--rhc-space-2xl, 1.5rem);
+  }
+
+  .mox-grid__cell {
+    --_mox-span: var(
+      --mox-grid-span-md,
+      var(--mox-grid-span-sm, var(--mox-grid-span, 12))
+    );
+  }
+}
+
+@media (min-width: 64em) {
+  .mox-grid__cell {
+    --_mox-span: var(
+      --mox-grid-span-lg,
+      var(--mox-grid-span-md, var(--mox-grid-span-sm, var(--mox-grid-span, 12)))
+    );
+  }
+}
+
+@media (min-width: 80em) {
+  .mox-grid__cell {
+    --_mox-span: var(
+      --mox-grid-span-xl,
+      var(
+        --mox-grid-span-lg,
+        var(
+          --mox-grid-span-md,
+          var(--mox-grid-span-sm, var(--mox-grid-span, 12))
+        )
+      )
+    );
+  }
+}
+
+/* Breedte zonder breakpoint (alle schermen) */
+.mox-grid__cell--1 {
+  --mox-grid-span: 1;
+}
+.mox-grid__cell--2 {
+  --mox-grid-span: 2;
+}
+.mox-grid__cell--3 {
+  --mox-grid-span: 3;
+}
+.mox-grid__cell--4 {
+  --mox-grid-span: 4;
+}
+.mox-grid__cell--5 {
+  --mox-grid-span: 5;
+}
+.mox-grid__cell--6 {
+  --mox-grid-span: 6;
+}
+.mox-grid__cell--7 {
+  --mox-grid-span: 7;
+}
+.mox-grid__cell--8 {
+  --mox-grid-span: 8;
+}
+.mox-grid__cell--9 {
+  --mox-grid-span: 9;
+}
+.mox-grid__cell--10 {
+  --mox-grid-span: 10;
+}
+.mox-grid__cell--11 {
+  --mox-grid-span: 11;
+}
+.mox-grid__cell--12 {
+  --mox-grid-span: 12;
+}
+
+/* sm ≥ 40em */
+.mox-grid__cell--sm-1 {
+  --mox-grid-span-sm: 1;
+}
+.mox-grid__cell--sm-2 {
+  --mox-grid-span-sm: 2;
+}
+.mox-grid__cell--sm-3 {
+  --mox-grid-span-sm: 3;
+}
+.mox-grid__cell--sm-4 {
+  --mox-grid-span-sm: 4;
+}
+.mox-grid__cell--sm-5 {
+  --mox-grid-span-sm: 5;
+}
+.mox-grid__cell--sm-6 {
+  --mox-grid-span-sm: 6;
+}
+.mox-grid__cell--sm-7 {
+  --mox-grid-span-sm: 7;
+}
+.mox-grid__cell--sm-8 {
+  --mox-grid-span-sm: 8;
+}
+.mox-grid__cell--sm-9 {
+  --mox-grid-span-sm: 9;
+}
+.mox-grid__cell--sm-10 {
+  --mox-grid-span-sm: 10;
+}
+.mox-grid__cell--sm-11 {
+  --mox-grid-span-sm: 11;
+}
+.mox-grid__cell--sm-12 {
+  --mox-grid-span-sm: 12;
+}
+
+/* md ≥ 48em */
+.mox-grid__cell--md-1 {
+  --mox-grid-span-md: 1;
+}
+.mox-grid__cell--md-2 {
+  --mox-grid-span-md: 2;
+}
+.mox-grid__cell--md-3 {
+  --mox-grid-span-md: 3;
+}
+.mox-grid__cell--md-4 {
+  --mox-grid-span-md: 4;
+}
+.mox-grid__cell--md-5 {
+  --mox-grid-span-md: 5;
+}
+.mox-grid__cell--md-6 {
+  --mox-grid-span-md: 6;
+}
+.mox-grid__cell--md-7 {
+  --mox-grid-span-md: 7;
+}
+.mox-grid__cell--md-8 {
+  --mox-grid-span-md: 8;
+}
+.mox-grid__cell--md-9 {
+  --mox-grid-span-md: 9;
+}
+.mox-grid__cell--md-10 {
+  --mox-grid-span-md: 10;
+}
+.mox-grid__cell--md-11 {
+  --mox-grid-span-md: 11;
+}
+.mox-grid__cell--md-12 {
+  --mox-grid-span-md: 12;
+}
+
+/* lg ≥ 64em */
+.mox-grid__cell--lg-1 {
+  --mox-grid-span-lg: 1;
+}
+.mox-grid__cell--lg-2 {
+  --mox-grid-span-lg: 2;
+}
+.mox-grid__cell--lg-3 {
+  --mox-grid-span-lg: 3;
+}
+.mox-grid__cell--lg-4 {
+  --mox-grid-span-lg: 4;
+}
+.mox-grid__cell--lg-5 {
+  --mox-grid-span-lg: 5;
+}
+.mox-grid__cell--lg-6 {
+  --mox-grid-span-lg: 6;
+}
+.mox-grid__cell--lg-7 {
+  --mox-grid-span-lg: 7;
+}
+.mox-grid__cell--lg-8 {
+  --mox-grid-span-lg: 8;
+}
+.mox-grid__cell--lg-9 {
+  --mox-grid-span-lg: 9;
+}
+.mox-grid__cell--lg-10 {
+  --mox-grid-span-lg: 10;
+}
+.mox-grid__cell--lg-11 {
+  --mox-grid-span-lg: 11;
+}
+.mox-grid__cell--lg-12 {
+  --mox-grid-span-lg: 12;
+}
+
+/* xl ≥ 80em */
+.mox-grid__cell--xl-1 {
+  --mox-grid-span-xl: 1;
+}
+.mox-grid__cell--xl-2 {
+  --mox-grid-span-xl: 2;
+}
+.mox-grid__cell--xl-3 {
+  --mox-grid-span-xl: 3;
+}
+.mox-grid__cell--xl-4 {
+  --mox-grid-span-xl: 4;
+}
+.mox-grid__cell--xl-5 {
+  --mox-grid-span-xl: 5;
+}
+.mox-grid__cell--xl-6 {
+  --mox-grid-span-xl: 6;
+}
+.mox-grid__cell--xl-7 {
+  --mox-grid-span-xl: 7;
+}
+.mox-grid__cell--xl-8 {
+  --mox-grid-span-xl: 8;
+}
+.mox-grid__cell--xl-9 {
+  --mox-grid-span-xl: 9;
+}
+.mox-grid__cell--xl-10 {
+  --mox-grid-span-xl: 10;
+}
+.mox-grid__cell--xl-11 {
+  --mox-grid-span-xl: 11;
+}
+.mox-grid__cell--xl-12 {
+  --mox-grid-span-xl: 12;
+}
