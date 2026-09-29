@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import Keycloak from "next-auth/providers/keycloak";
 import { setOptionCookies, updateKvkCookie } from "./utils/kvknummer";
 import { GetKvknummersByBsn } from "@/network/kvk/organisatieregister/fetchers/getKvknummersByBsn";
+import { devLoginEnabled, devLoginProvider } from "./utils/auth/devLogin";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   debug: false,
@@ -17,13 +18,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async jwt({ token, account, profile, user }) {
-      if (account && profile) {
+      if (account && (profile || devLoginEnabled)) {
+        const bsn = profile?.bsn ?? user.bsn;
         token.id = user.id;
-        token.bsn = profile.bsn || null;
-        token.preferred_username = profile.preferred_username;
+        token.bsn = bsn || null;
+        token.preferred_username =
+          profile?.preferred_username ?? user.preferred_username;
         token.accessToken = account.access_token;
         token.idToken = account.id_token;
-        const kvkOpties = await GetKvknummersByBsn(profile.bsn);
+        const kvkOpties = await GetKvknummersByBsn(bsn ?? "");
         setOptionCookies(kvkOpties);
         if (kvkOpties.organisaties && kvkOpties.organisaties.length > 0) {
           updateKvkCookie(kvkOpties.organisaties[0].kvkNummer);
@@ -43,5 +46,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return session;
     },
   },
-  providers: [Keycloak],
+  providers: devLoginEnabled ? [devLoginProvider] : [Keycloak],
 });
